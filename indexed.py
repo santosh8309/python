@@ -1,25 +1,20 @@
-from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
+from nltk.stem.porter import *
 import re
 
 
-
-raw = open("test",'r')
-word_list = re.split(r'\s+', raw.read())
+raw = open("test", 'r')
+tokens = re.split(r'\s+', raw.read())
+stemmer = PorterStemmer()
+words = [stemmer.stem(word) for word in tokens]
 stop_words = set(stopwords.words("english"))
 punctuation = re.compile(r'[-.?!,":;()|0-9]')
 
-word_list = [punctuation.sub("",words) for words in word_list]
-
+word_list = [punctuation.sub('', word) for word in words]
+output = open("output", 'w')
 for word in word_list:
-    tokens = []
-    tokens +=  word_tokenize(word)
-    for i in tokens:
-        if i not in stop_words:
-            print(i)
+    if word not in stop_words:
+       output.write(word)
+       output.write('\n')
 
-
-
-
-
-
+       
